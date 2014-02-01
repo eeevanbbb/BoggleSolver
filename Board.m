@@ -35,21 +35,31 @@
     return self;
 }
 
-//String must be 16 characters long. The string is read into the board from left to right, top to bottom.
+//String must be 16 (or 17, for Qu) characters long.
 -(id)initWithString:(NSString *)string {
     
     NSMutableArray *mutTiles = [[NSMutableArray alloc] init];
     
     NSArray *allPositions = [Position allPositions];
     
+    int j = 0; //A seperate enumerator for letter index in the string. i will be for index in allPositions
+    
     //Create a new tile for each letter and give it a position. For this to work, the allPositions array is ordered from left to right, top to bottom.
     for (int i = 0; i<allPositions.count; i++) {
         
-        char letter = [string characterAtIndex:i];
-                
+        NSString *letter = [string substringWithRange:NSMakeRange(j, 1)];
+        
+        if ([letter isEqualToString:@"q"]) {
+            
+            letter = [string substringWithRange:NSMakeRange(j, 2)];
+            j++;
+        }
+        
         Tile *newTile = [[Tile alloc] initWithPosition:[allPositions objectAtIndex:i] andLetter:letter];
         
         [mutTiles addObject:newTile];
+        
+        j++;
     }
     
     tiles = mutTiles;
@@ -58,7 +68,7 @@
 }
 
 
--(char)letterForPosition:(Position *)pos {
+-(NSString *)letterForPosition:(Position *)pos {
     
     for (Tile *tile in tiles) {
         
@@ -68,7 +78,7 @@
         }
     }
     
-    return '#'; //This is just to make the compiler happy. If the implicit conditions for this class are met, this should never run.
+    return @"#"; //This line should never be called if everything is done right
 }
 
 -(Tile *)tileForPosition:(Position *)pos {

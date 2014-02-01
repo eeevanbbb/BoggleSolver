@@ -17,18 +17,18 @@
 -(id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         self.position = [aDecoder decodeObjectForKey:@"position"];
-        self.letter = [aDecoder decodeIntegerForKey:@"letter"];
+        self.letter = [aDecoder decodeObjectForKey:@"letter"];
     }
     return self;
 }
 
 -(void)encodeWithCoder:(NSCoder *)aEncoder {
     [aEncoder encodeObject:position forKey:@"position"];
-    [aEncoder encodeInteger:letter forKey:@"letter"];
+    [aEncoder encodeObject:letter forKey:@"letter"];
 }
 
 
--(id)initWithPosition:(Position *)aPosition andLetter:(int)aLetter {
+-(id)initWithPosition:(Position *)aPosition andLetter:(NSString *)aLetter {
     
     position = aPosition;
     letter = aLetter;
@@ -46,17 +46,14 @@
 //This will be useful in determining if an array of tiles makes a word, or if it makes the beginning of a word (and we should therefor continue pursuing possible continuations of the path).
 +(NSString *)tileChainToString:(NSArray *)chain {
     
-    char letters[chain.count];
+    NSString *word = @"";
     
     for (int i = 0; i<chain.count; i++) {
         
-        letters[i] = [(Tile *)[chain objectAtIndex:i] letter];
+        word = [word stringByAppendingString:[(Tile *)[chain objectAtIndex:i] letter]];
     }
     
-    //The char array needs a terminating char.
-    letters[chain.count] = '\0';
-    
-    return [NSString stringWithCString:letters encoding:NSASCIIStringEncoding];
+    return word;
 }
 
 //This will help ensure that each tile is only used once per path.

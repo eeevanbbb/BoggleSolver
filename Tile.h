@@ -15,15 +15,15 @@
     
     Position *position;
     
-    char letter; //To allow for the 'Qu' tile, this should be changed to an NSString*.
+    NSString *letter; //This has been changed from a char type to allow for inclusion of the 'Qu' tile
 }
 
 @property Position *position;
-@property char letter;
+@property NSString *letter;
 
 +(NSString *)tileChainToString:(NSArray *)chain; //Given an array of tiles, return the string their letters form
 +(BOOL)doesTileChain:(NSArray *)chain containPosition:(Position *)position; //Does an array of tiles contain one at the given position
--(id)initWithPosition:(Position *)aPosition andLetter:(int)aLetter;
+-(id)initWithPosition:(Position *)aPosition andLetter:(NSString *)aLetter;
 -(id)initWithPosition:(Position *)aPosition; //Allow for path logic independent of letters.
 
 @end
